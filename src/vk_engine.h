@@ -5,6 +5,16 @@
 
 #include <vk_types.h>
 
+
+struct FrameData
+{
+	VkCommandPool _commandPool;
+	VkCommandBuffer _mainCommandBuffer;
+};
+
+constexpr unsigned int FRAME_OVERLAP = 2;
+
+
 class VulkanEngine {
 private:
 	void init_vulkan();
@@ -16,6 +26,15 @@ private:
 	void destroy_swapchain();
 		
 public:
+
+	FrameData _frames[FRAME_OVERLAP];
+
+	FrameData& get_current_frame() { return _frames[_frameNumber % FRAME_OVERLAP]; }
+
+	VkQueue _graphicsQueue;
+	uint32_t _graphicsQueueFamily;
+
+
 
 	VkInstance _instance;// Vulkan library handle
 	VkDebugUtilsMessengerEXT _debug_messenger;// Vulkan debug output handle
